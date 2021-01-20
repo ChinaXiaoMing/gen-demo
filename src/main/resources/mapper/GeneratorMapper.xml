@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.person.gen.mapper.GeneratorMapper">
+
+  <select id="selectTableInfoByTableName" resultType="com.person.gen.entity.TableInfo">
+    SELECT table_name, table_comment FROM information_schema.TABLES
+    <where>
+      table_schema = (SELECT DATABASE()) AND table_name = #{tableName}
+    </where>
+    ORDER BY create_time DESC
+  </select>
+
+</mapper>
