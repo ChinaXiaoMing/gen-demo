@@ -1,5 +1,6 @@
 package com.person.gen.entity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import lombok.Data;
  * @since 2021-01-20
  */
 @Data
+@ApiModel("table_info")
 public class TableInfo {
 
   @ApiModelProperty("表名称")

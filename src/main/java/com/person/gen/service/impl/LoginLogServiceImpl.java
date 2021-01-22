@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
+ * 登录日志逻辑实现
+ *
  * @author fu.yuanming
  * @since 2021-01-06
  */

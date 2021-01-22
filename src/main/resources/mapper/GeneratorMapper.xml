@@ -11,4 +11,9 @@
     ORDER BY create_time DESC
   </select>
 
+  <select id="selectColumnInfoByTableName" resultType="com.person.gen.entity.ColumnInfo">
+    SELECT 	column_name, is_nullable, data_type, column_comment, column_key, extra FROM information_schema.COLUMNS
+    WHERE table_name = #{tableName} ORDER BY ordinal_position
+  </select>
+
 </mapper>

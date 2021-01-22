@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-01-05
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/loginLog")
+@RequiredArgsConstructor
 @Api(tags = "登录日志管理API")
 public class LoginLogController {
 
