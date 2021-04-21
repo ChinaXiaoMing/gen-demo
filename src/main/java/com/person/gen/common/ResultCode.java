@@ -1,5 +1,8 @@
 package com.person.gen.common;
 
+import lombok.Data;
+import lombok.Getter;
+
 /**
  * 响应结果枚举类
  *
@@ -14,28 +17,14 @@ public enum ResultCode {
     FORBIDDEN(403, "没有相关权限"),
     NOT_FOUND(404, "没有找到请求资源");
 
+    @Getter
     private int code;
 
+    @Getter
     private String message;
 
     ResultCode(int code, String message) {
         this.code = code;
-        this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
     }
 }

@@ -2,6 +2,7 @@ package com.person.gen.mapper;
 
 import com.person.gen.entity.ColumnInfo;
 import com.person.gen.entity.TableInfo;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,6 +17,6 @@ public interface GeneratorMapper {
 
   TableInfo selectTableInfoByTableName(@Param("tableName") String tableName);
 
-  ColumnInfo selectColumnInfoByTableName(@Param("tableName") String tableName);
+  List<ColumnInfo> selectColumnInfoByTableName(@Param("tableName") String tableName);
 
 }
