@@ -1,6 +1,5 @@
 package com.person.gen.common;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**

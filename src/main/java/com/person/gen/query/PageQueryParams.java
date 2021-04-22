@@ -1,4 +1,4 @@
-package com.person.gen.common;
+package com.person.gen.query;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -7,7 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 /**
  * 分页查询参数
  *
- * @author bianjp
+ * @author fu.yuanming
  * @since 2020-05-22
  */
 @Data

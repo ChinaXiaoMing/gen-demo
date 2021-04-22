@@ -1,7 +1,7 @@
 package com.person.gen.service;
 
 import com.person.gen.entity.ColumnInfo;
-import com.person.gen.query.GenConfig;
+import com.person.gen.query.GenParam;
 import java.util.List;
 
 /**
@@ -15,17 +15,17 @@ public interface GeneratorService {
 	/**
 	 * 获取字段信息
 	 *
-	 * @param genConfig 表名称
+	 * @param genParam 表名称
 	 * @return 字段信息
 	 */
-	List<ColumnInfo> qryColumnInfoList(GenConfig genConfig);
+	List<ColumnInfo> qryColumnInfoList(GenParam genParam);
 
 	/**
 	 * 自动生成代码
 	 *
-	 * @param genConfig 表名称
-	 * @return 是否成功
+	 * @param genParam 表名称
+	 * @return 代码生成是否成功
 	 */
-	Boolean generateCode(GenConfig genConfig);
+	Boolean generateCode(GenParam genParam);
 
 }

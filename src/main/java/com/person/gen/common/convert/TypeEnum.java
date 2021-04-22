@@ -16,7 +16,10 @@ public enum TypeEnum {
 	DOUBLE("double"),
 	DECIMAL("decimal"),
 	VARCHAR("varchar"),
+	CHAR("char"),
+	TEXT("text"),
 	DATETIME("datetime"),
+	TIMESTAMP("timestamp"),
 	BLOB("blob"),
 	JSONB("jsonb");
 

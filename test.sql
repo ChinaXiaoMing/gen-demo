@@ -11,7 +11,7 @@
  Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 22/01/2021 17:48:06
+ Date: 23/04/2021 19:49:28
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `login_log`  (
   `operation_system` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作系统',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of login_log
@@ -116,6 +116,7 @@ INSERT INTO `login_log` VALUES (75, 'xiaoming', '127.0.0.1', 1, '2018-06-22 16:3
 INSERT INTO `login_log` VALUES (76, 'xiaoming', '127.0.0.1', 1, '2018-06-22 16:35:22', 263, 'Chrome', 'Browser', '65.0.3325.181', 'Windows 10', NULL);
 INSERT INTO `login_log` VALUES (77, 'xiaoming', '127.0.0.1', 1, '2018-06-22 16:48:43', 283, 'Chrome', 'Browser', '65.0.3325.181', 'Windows 10', NULL);
 INSERT INTO `login_log` VALUES (78, 'xiaoming', '127.0.0.1', 1, '2018-06-22 17:20:32', 316, 'Chrome', 'Browser', '65.0.3325.181', 'Windows 10', NULL);
+INSERT INTO `login_log` VALUES (79, 'string', 'string', 0, '2021-04-13 09:37:21', 0, 'string', 'string', 'string', 'string', 'string1');
 
 -- ----------------------------
 -- Table structure for roles_permissions
@@ -163,16 +164,24 @@ CREATE TABLE `sys_menu`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
-  `id` int(10) NOT NULL COMMENT 'user_id',
-  `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名称',
-  `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户密码',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+  `user_id` int(10) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '用户 ID',
+  `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账号',
+  `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
+  `sex` tinyint(1) NOT NULL DEFAULT 0 COMMENT '性别（0：未知 1：男 2：女）',
+  `status` int(2) NULL DEFAULT NULL COMMENT '账号状态（0：停用 1：激活 2：锁定）',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'xiaoming', 'e10adc3949ba59abbe56e057f20f883e');
+INSERT INTO `sys_user` VALUES (1, 'xiaoming', 'e10adc3949ba59abbe56e057f20f883e', NULL, 0, NULL, NULL, NULL, '备注');
+INSERT INTO `sys_user` VALUES (2, 'xiaohong1', 'e10adc3949ba59abbe56e057f20f883e', NULL, 2, 1, NULL, NULL, '备注');
+INSERT INTO `sys_user` VALUES (3, 'xiaohong2', 'e10adc3949ba59abbe56e057f20f883e', NULL, 2, 1, NULL, NULL, '备注');
 
 -- ----------------------------
 -- Table structure for user_roles

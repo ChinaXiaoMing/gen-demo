@@ -1,14 +1,14 @@
 package ${packageName}.mapper;
 
 import com.github.pagehelper.Page;
-import ${packageName}.dto.${className}PageQuery;
-import ${packageName}.entity.${className};
+import ${packageName}.query.${className}PageQuery;
+import ${packageName}.model.${className};
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 /**
-* ${description} Mapper
+* ${description}管理 Mapper
 *
 * @author ${author}
 * @since ${fileCreateTime}

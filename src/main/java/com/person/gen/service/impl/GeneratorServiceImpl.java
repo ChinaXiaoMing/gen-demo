@@ -1,17 +1,21 @@
 package com.person.gen.service.impl;
 
 import com.person.gen.common.convert.JavaColumnTypeConverter;
+import com.person.gen.config.GenConfig;
+import com.person.gen.constant.Constant;
 import com.person.gen.dto.ColumnInfoDTO;
 import com.person.gen.entity.ColumnInfo;
+import com.person.gen.entity.TableInfo;
 import com.person.gen.mapper.GeneratorMapper;
-import com.person.gen.query.GenConfig;
+import com.person.gen.query.GenParam;
 import com.person.gen.service.GeneratorService;
-import com.person.gen.utils.FreeMarkerUtils;
+import com.person.gen.utils.gen.FreeMarkerUtils;
 import com.person.gen.utils.StrUtils;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,18 +31,56 @@ public class GeneratorServiceImpl implements GeneratorService {
 
 	private final GeneratorMapper generatorMapper;
 
+	private final GenConfig genConfig;
+
 
 	@Override
-	public List<ColumnInfo> qryColumnInfoList(GenConfig genConfig) {
-		return generatorMapper.selectColumnInfoByTableName(genConfig.getTableName());
+	public List<ColumnInfo> qryColumnInfoList(GenParam genParam) {
+		return generatorMapper.selectColumnInfoByTableName(genParam.getTableName());
 	}
 
 	@Override
-	public Boolean generateCode(GenConfig genConfig) {
-		List<ColumnInfo> columnInfoList = qryColumnInfoList(genConfig);
-		List<ColumnInfoDTO> columnInfoDTOList = buildColumnInfo(columnInfoList);
-		FreeMarkerUtils.genCode(genConfig, columnInfoDTOList);
+	public Boolean generateCode(GenParam genParam) {
+		List<ColumnInfoDTO> columnInfoList = buildColumnInfo(qryColumnInfoList(genParam));
+		// 处理自动生成代码前端配置参数
+		processGenParam(genParam);
+		// 自动生成后端代码
+		FreeMarkerUtils.genServerCode(genParam, columnInfoList);
 		return true;
+	}
+
+	// 处理自动生成代码前端配置参数
+	private void processGenParam(GenParam genParam) {
+		// 保存前端原始表名称
+		genParam.setOriginTableName(genParam.getTableName());
+		// 设置作者，不设置默认为配置文件中的配置
+		if (StringUtils.isEmpty(genParam.getAuthor())) {
+			genParam.setAuthor(genConfig.getAuthor());
+		}
+		// 设置包名称，不设置默认为配置文件中的配置
+		if (StringUtils.isEmpty(genParam.getPackageName())) {
+			genParam.setPackageName(genConfig.getPackageName());
+		}
+		// 设置功能描述，不设置默认使用数据库表注释
+		if (StringUtils.isEmpty(genParam.getDescription())) {
+			TableInfo tableInfo = generatorMapper.selectTableInfoByTableName(genParam.getTableName());
+			if (tableInfo != null) {
+				String tableComment = tableInfo.getTableComment();
+				if (StringUtils.isNotEmpty(tableComment) && tableComment.contains(Constant.COMMENT_SUFFIX)) {
+					genParam.setDescription(tableComment.substring(0, tableComment.length() - 1));
+				} else {
+					genParam.setDescription(tableComment);
+				}
+			}
+		}
+		String tableName = genParam.getTableName();
+		String ignorePrefix = genParam.getIgnorePrefix();
+		// 忽略前缀
+		if (StringUtils.isNotEmpty(ignorePrefix)) {
+			genParam.setTableName(tableName.substring(tableName.length() - ignorePrefix.length() - 1));
+		} else {
+			genParam.setTableName(tableName);
+		}
 	}
 
 	private List<ColumnInfoDTO> buildColumnInfo(List<ColumnInfo> columnInfoList) {

@@ -2,7 +2,7 @@ package com.person.gen.controller;
 
 import com.person.gen.common.Result;
 import com.person.gen.entity.ColumnInfo;
-import com.person.gen.query.GenConfig;
+import com.person.gen.query.GenParam;
 import com.person.gen.service.GeneratorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "gen")
 @RequiredArgsConstructor
-@Api(tags = "自动生成代码 API")
+@Api(tags = "自动生成代码API")
 public class GeneratorController {
 
   private final GeneratorService generatorService;
 
   @ApiOperation(value = "获取表字段信息", notes = "获取表字段信息")
   @GetMapping("qryColumnInfoList")
-  public Result<List<ColumnInfo>> qryColumnInfoList(GenConfig genConfig) {
-    return Result.success(generatorService.qryColumnInfoList(genConfig));
+  public Result<List<ColumnInfo>> qryColumnInfoList(GenParam genParam) {
+    return Result.success(generatorService.qryColumnInfoList(genParam));
   }
 
   @ApiOperation(value = "根据表名称自动生成代码", notes = "根据表名称自动生成代码")
   @GetMapping("generateCode")
-  public Result<Boolean> generateCode(GenConfig genConfig) {
-    return Result.success(generatorService.generateCode(genConfig));
+  public Result<Boolean> generateCode(GenParam genParam) {
+    return Result.success(generatorService.generateCode(genParam));
   }
 
 }

@@ -1,23 +1,20 @@
-package ${packageName}.model;
+package ${packageName}.query;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import lombok.Data;
 
 /**
-* ${description}
+* ${description}分页查询参数
 *
 * @author ${author}
 * @since ${fileCreateTime}
 */
 @Data
-@ApiModel("${originTableName}")
-public class ${className} {
-
-    <#list columnInfoList as columnInfo>
+public class ${className}PageQuery extends PageQueryParams {
+<#list columnInfoList as columnInfo>
     @ApiModelProperty("${columnInfo.columnComment}")
     private ${columnInfo.javaType} ${columnInfo.columnModelName};
 
-    </#list>
+</#list>
 }
