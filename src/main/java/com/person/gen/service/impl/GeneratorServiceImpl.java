@@ -77,7 +77,14 @@ public class GeneratorServiceImpl implements GeneratorService {
 		String ignorePrefix = genParam.getIgnorePrefix();
 		// 忽略前缀
 		if (StringUtils.isNotEmpty(ignorePrefix)) {
-			genParam.setTableName(tableName.substring(tableName.length() - ignorePrefix.length() - 1));
+
+			if (ignorePrefix.contains(Constant.UNDERLINE)) {
+				genParam.setTableName(tableName.substring(ignorePrefix.length()));
+			}
+			// 忽略前缀不包含下划线时
+			else {
+				genParam.setTableName(tableName.substring(ignorePrefix.length() + 1));
+			}
 		} else {
 			genParam.setTableName(tableName);
 		}

@@ -42,6 +42,11 @@ public class ContentParam {
 	@ApiModelProperty("原始表名称")
 	private String originTableName;
 
+	@ApiModelProperty("Date Java类型")
+	private String dateJavaType;
+	@ApiModelProperty("BigDecimal Java类型")
+	private String bigDecimalJavaType;
+
 	public ContentParam(GenParam genParam) {
 		this.packageName = genParam.getPackageName();
 		this.description = genParam.getDescription();

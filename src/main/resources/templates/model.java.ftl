@@ -2,7 +2,12 @@ package ${packageName}.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+<#if (bigDecimalJavaType!'') == 'BigDecimal'>
+import java.math.BigDecimal;
+</#if>
+<#if (dateJavaType!'') == 'Date'>
 import java.util.Date;
+</#if>
 import lombok.Data;
 
 /**

@@ -138,6 +138,15 @@ public class FreeMarkerUtils {
 		contentParam.setOriginTableName(genParam.getOriginTableName());
 		contentParam.setKeyColumnInfo(keyColumnInfo);
 		contentParam.setColumnInfoList(columnInfoList);
+		for (ColumnInfoDTO columnInfo : columnInfoList) {
+			if (columnInfo.getJavaType().contains("Date")) {
+				contentParam.setDateJavaType("Date");
+			}
+			if (columnInfo.getJavaType().contains("BigDecimal")) {
+				contentParam.setBigDecimalJavaType("BigDecimal");
+			}
+		}
+		log.info("{}", contentParam);
 
 		return contentParam;
 	}

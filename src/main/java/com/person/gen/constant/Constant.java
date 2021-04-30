@@ -10,4 +10,6 @@ public final class Constant {
 
 	public static final String COMMENT_SUFFIX = "表";
 
+	public static final String UNDERLINE = "_";
+
 }
