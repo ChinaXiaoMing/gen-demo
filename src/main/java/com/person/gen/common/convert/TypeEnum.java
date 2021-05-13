@@ -8,6 +8,12 @@ import lombok.Getter;
  * @author xiaoming
  */
 public enum TypeEnum {
+	/**
+	 * <p>mysql数据库类型 BIT：bit，BOOLEAN：boolean，TINYINT：tinyint，SMALLINT：smallint，INT：int，BIGINT：bigint，
+	 * FLOAT：float，DOUBLE：double，DECIMAL：decimal，VARCHAR：varchar，CHAR：char，TEXT：text，DATETIME：datetime，
+	 * TIMESTAMP：timestamp，BLOB：blob，JSONB：jsonb
+	 * </p>
+	 */
 	BIT("bit"),
 	BOOLEAN("boolean"),
 	TINYINT("tinyint"),

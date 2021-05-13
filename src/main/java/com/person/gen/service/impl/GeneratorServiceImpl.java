@@ -11,6 +11,8 @@ import com.person.gen.query.GenParam;
 import com.person.gen.service.GeneratorService;
 import com.person.gen.utils.gen.FreeMarkerUtils;
 import com.person.gen.utils.StrUtils;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +47,20 @@ public class GeneratorServiceImpl implements GeneratorService {
 		// 处理自动生成代码前端配置参数
 		processGenParam(genParam);
 		// 自动生成后端代码
-		FreeMarkerUtils.genServerCode(genParam, columnInfoList);
+		try {
+			FreeMarkerUtils.genServerCode(genParam, columnInfoList);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
-	// 处理自动生成代码前端配置参数
+
+	/**
+	 * 处理自动生成代码前端配置参数
+	 *
+	 * @param genParam 自动生成代码参数
+	 */
 	private void processGenParam(GenParam genParam) {
 		// 保存前端原始表名称
 		genParam.setOriginTableName(genParam.getTableName());

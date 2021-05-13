@@ -15,8 +15,20 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface GeneratorMapper {
 
+	/**
+	 * 根据表名称查询表信息
+	 *
+	 * @param tableName 表名
+	 * @return 表信息
+	 */
 	TableInfo selectTableInfoByTableName(@Param("tableName") String tableName);
 
+	/**
+	 * 根据表名称查询列信息
+	 *
+	 * @param tableName 表名
+	 * @return 列信息列表
+	 */
 	List<ColumnInfo> selectColumnInfoByTableName(@Param("tableName") String tableName);
 
 }
