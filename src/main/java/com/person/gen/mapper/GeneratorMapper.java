@@ -15,8 +15,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface GeneratorMapper {
 
-  TableInfo selectTableInfoByTableName(@Param("tableName") String tableName);
+	TableInfo selectTableInfoByTableName(@Param("tableName") String tableName);
 
-  List<ColumnInfo> selectColumnInfoByTableName(@Param("tableName") String tableName);
+	List<ColumnInfo> selectColumnInfoByTableName(@Param("tableName") String tableName);
 
 }

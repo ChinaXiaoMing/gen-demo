@@ -8,6 +8,9 @@ package com.person.gen.constant;
  */
 public final class Constant {
 
+	private Constant() {
+	}
+
 	public static final String COMMENT_SUFFIX = "表";
 
 	public static final String UNDERLINE = "_";

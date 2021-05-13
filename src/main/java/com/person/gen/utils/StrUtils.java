@@ -8,6 +8,8 @@ package com.person.gen.utils;
  */
 public class StrUtils {
 
+	private StrUtils() {}
+
 	private static final String UNDERLINE = "_";
 
 	/**

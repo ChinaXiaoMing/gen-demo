@@ -11,8 +11,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateUtils {
 
-  public static String formatDate(LocalDate localDate) {
-    return localDate.format(DateTimeFormatter.ISO_DATE);
-  }
+	private DateUtils() {
+
+	}
+
+	public static String formatDate(LocalDate localDate) {
+		return localDate.format(DateTimeFormatter.ISO_DATE);
+	}
 
 }

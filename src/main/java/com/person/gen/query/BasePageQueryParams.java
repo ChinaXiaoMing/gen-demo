@@ -11,7 +11,7 @@ import org.apache.ibatis.session.RowBounds;
  * @since 2020-05-22
  */
 @Data
-public abstract class PageQueryParams {
+public abstract class BasePageQueryParams {
 
   @ApiModelProperty("页数，默认 1")
   protected Integer pageNum;

@@ -14,21 +14,34 @@ public class Result<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// 操作成功默认提示信息
+	/**
+	 * 操作成功默认提示信息
+	 */
 	private static final String DEFAULT_SUCCESS_MSG = "操作成功";
-	// 操作成功默认状态码
+	/**
+	 * 操作成功默认状态码
+	 */
 	private static final int DEFAULT_SUCCESS_CODE = 200;
-	// 操作失败默认提示信息
+	/**
+	 * 操作失败默认提示信息
+	 */
 	private static final String DEFAULT_ERROR_MSG = "操作失败";
-	// 操作失败默认状态码
+	/**
+	 * 操作失败默认状态码
+	 */
 	private static final int DEFAULT_ERROR_CODE = 500;
-
-	// 状态码
+	/**
+	 * 状态码
+	 */
 	private int code;
-	// 提示信息
+	/**
+	 * 提示信息
+	 */
 	private String message;
-	// 操作成功时获取的响应数据
-	private T data;
+	/**
+	 * 操作成功时获取的响应数据
+	 */
+	private transient T data;
 
 	public Result(int code, String message) {
 		this.code = code;

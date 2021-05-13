@@ -4,6 +4,8 @@ import lombok.Getter;
 
 /**
  * MySQL数据库字段类型
+ *
+ * @author xiaoming
  */
 public enum TypeEnum {
 	BIT("bit"),
