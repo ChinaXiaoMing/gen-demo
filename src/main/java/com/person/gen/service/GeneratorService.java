@@ -1,7 +1,9 @@
 package com.person.gen.service;
 
+import com.person.gen.common.Result;
 import com.person.gen.entity.ColumnInfo;
 import com.person.gen.query.GenParam;
+
 import java.util.List;
 
 /**
@@ -26,6 +28,6 @@ public interface GeneratorService {
 	 * @param genParam 表名称
 	 * @return 代码生成是否成功
 	 */
-	Boolean generateCode(GenParam genParam);
+	Result<String> generateCode(GenParam genParam);
 
 }

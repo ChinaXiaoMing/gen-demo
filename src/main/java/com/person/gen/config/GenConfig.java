@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "gen")
 public class GenConfig {
+
 	/**
 	 * 作者
 	 */
@@ -22,5 +23,17 @@ public class GenConfig {
 	 * 包名称
 	 */
 	private String packageName;
+	/**
+	 * 项目路径
+	 */
+	private String projectPath;
+	/**
+	 * java路径
+	 */
+	private String javaPath;
+	/**
+	 * 源路径
+	 */
+	private String sourcePath;
 
 }

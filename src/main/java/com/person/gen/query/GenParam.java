@@ -15,7 +15,7 @@ public class GenParam {
 	@ApiModelProperty("功能描述")
 	private String description;
 
-	@ApiModelProperty("表名称")
+	@ApiModelProperty(value = "表名称",required = true)
 	private String tableName;
 
 	@ApiModelProperty("包名称")
@@ -27,7 +27,16 @@ public class GenParam {
 	@ApiModelProperty("忽略前缀")
 	private String ignorePrefix;
 
-	@ApiModelProperty(name = "前端传递的表名称", hidden = true)
+	@ApiModelProperty(value = "前端传递的表名称", hidden = true)
 	private String originTableName;
+
+	@ApiModelProperty("工程路径")
+	private String projectPath;
+
+	@ApiModelProperty(value = "Java目录", hidden = true)
+	private String javaPath;
+
+	@ApiModelProperty(value = "资源目录", hidden = true)
+	private String sourcePath;
 
 }

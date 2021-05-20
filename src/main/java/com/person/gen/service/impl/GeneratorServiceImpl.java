@@ -1,5 +1,6 @@
 package com.person.gen.service.impl;
 
+import com.person.gen.common.Result;
 import com.person.gen.common.convert.JavaColumnTypeConverter;
 import com.person.gen.config.GenConfig;
 import com.person.gen.constant.Constant;
@@ -9,16 +10,18 @@ import com.person.gen.entity.TableInfo;
 import com.person.gen.mapper.GeneratorMapper;
 import com.person.gen.query.GenParam;
 import com.person.gen.service.GeneratorService;
-import com.person.gen.utils.gen.FreeMarkerUtils;
 import com.person.gen.utils.StrUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.person.gen.utils.gen.FreeMarkerUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自动生成代码逻辑实现
@@ -42,17 +45,24 @@ public class GeneratorServiceImpl implements GeneratorService {
 	}
 
 	@Override
-	public Boolean generateCode(GenParam genParam) {
-		List<ColumnInfoDTO> columnInfoList = buildColumnInfo(qryColumnInfoList(genParam));
+	@Transactional(rollbackFor = Exception.class)
+	public Result<String> generateCode(GenParam genParam) {
+		List<ColumnInfo> columnInfos = qryColumnInfoList(genParam);
+		if (CollectionUtils.isEmpty(columnInfos)) {
+			log.error("{}数据库表不存在", genParam.getTableName());
+			return Result.error(genParam.getTableName() + "数据库表不存在");
+		}
+		List<ColumnInfoDTO> columnInfoList = buildColumnInfo(columnInfos);
 		// 处理自动生成代码前端配置参数
 		processGenParam(genParam);
 		// 自动生成后端代码
 		try {
 			FreeMarkerUtils.genServerCode(genParam, columnInfoList);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("生成代码发生错误", e);
+			return Result.error("生成代码发生错误");
 		}
-		return true;
+		return Result.success("代码生成成功");
 	}
 
 
@@ -73,6 +83,18 @@ public class GeneratorServiceImpl implements GeneratorService {
 			genParam.setPackageName(genConfig.getPackageName());
 		}
 		// 设置功能描述，不设置默认使用数据库表注释
+		processDescription(genParam);
+		// 忽略前缀
+		processPrefix(genParam);
+
+		if (StringUtils.isEmpty(genParam.getProjectPath())) {
+			genParam.setProjectPath(genConfig.getProjectPath());
+		}
+		genParam.setJavaPath(genConfig.getJavaPath());
+		genParam.setSourcePath(genConfig.getSourcePath());
+	}
+
+	private void processDescription(GenParam genParam) {
 		if (StringUtils.isEmpty(genParam.getDescription())) {
 			TableInfo tableInfo = generatorMapper.selectTableInfoByTableName(genParam.getTableName());
 			if (tableInfo != null) {
@@ -84,9 +106,11 @@ public class GeneratorServiceImpl implements GeneratorService {
 				}
 			}
 		}
+	}
+
+	private void processPrefix(GenParam genParam) {
 		String tableName = genParam.getTableName();
 		String ignorePrefix = genParam.getIgnorePrefix();
-		// 忽略前缀
 		if (StringUtils.isNotEmpty(ignorePrefix)) {
 
 			if (ignorePrefix.contains(Constant.UNDERLINE)) {
@@ -96,8 +120,6 @@ public class GeneratorServiceImpl implements GeneratorService {
 			else {
 				genParam.setTableName(tableName.substring(ignorePrefix.length() + 1));
 			}
-		} else {
-			genParam.setTableName(tableName);
 		}
 	}
 

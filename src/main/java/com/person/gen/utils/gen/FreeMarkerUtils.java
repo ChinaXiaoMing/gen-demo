@@ -1,22 +1,24 @@
 package com.person.gen.utils.gen;
 
-import static freemarker.template.Configuration.VERSION_2_3_30;
 import com.person.gen.dto.ColumnInfoDTO;
 import com.person.gen.query.GenParam;
 import com.person.gen.utils.StrUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.ResourceUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.ResourceUtils;
+
+import static freemarker.template.Configuration.VERSION_2_3_30;
 
 /**
  * @author fu.yuanming
@@ -24,10 +26,6 @@ import org.springframework.util.ResourceUtils;
  **/
 @Slf4j
 public class FreeMarkerUtils {
-
-	private static final String JAVA_DIR = System.getProperty("user.dir") + "/src/main/java/com/person/gen";
-
-	private static final String RESOURCE_DIR = System.getProperty("user.dir") + "/src/main/resources";
 
 	private static final String SEPARATOR = File.separator;
 
@@ -44,7 +42,7 @@ public class FreeMarkerUtils {
 
 	}
 
-	public static Boolean genServerCode(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
+	public static void genServerCode(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		// 生成controller文件
 		genControllerFile(genParam, columnInfoList);
 		// 生成service接口文件
@@ -59,13 +57,11 @@ public class FreeMarkerUtils {
 		genMapperXmlFile(genParam, columnInfoList);
 		// 生成实体类文件
 		genModelFile(genParam, columnInfoList);
-		return Boolean.TRUE;
 	}
 
 	public static void genControllerFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-
-		String genFileName = JAVA_DIR + SEPARATOR  + "controller" + SEPARATOR  + className + "Controller.java";
+		String genFileName = createDirIfNotExists(genParam, "controller") + SEPARATOR + className + "Controller.java";
 
 		ConfigParams params = buildConfigParams(genFileName, "controller.java.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
@@ -75,7 +71,7 @@ public class FreeMarkerUtils {
 
 	public static void genServiceFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-		String genFileName = JAVA_DIR + SEPARATOR  + "service" + SEPARATOR  + "I" + className + "Service.java";
+		String genFileName = createDirIfNotExists(genParam, "service") + SEPARATOR + "I" + className + "Service.java";
 
 		ConfigParams params = buildConfigParams(genFileName, "service.java.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
@@ -85,7 +81,7 @@ public class FreeMarkerUtils {
 
 	public static void genServiceImplFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-		String genFileName = JAVA_DIR + SEPARATOR  + "service/impl" + SEPARATOR  + className + "ServiceImpl.java";
+		String genFileName = createDirIfNotExists(genParam, "service/impl") + SEPARATOR + className + "ServiceImpl.java";
 
 		ConfigParams params = buildConfigParams(genFileName, "serviceImpl.java.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
@@ -95,7 +91,7 @@ public class FreeMarkerUtils {
 
 	public static void genPageQueryFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-		String genFileName = JAVA_DIR + SEPARATOR  + "query" + SEPARATOR  + className + "PageQuery.java";
+		String genFileName = createDirIfNotExists(genParam, "query") + SEPARATOR + className + "PageQuery.java";
 
 		ConfigParams params = buildConfigParams(genFileName, "pageQuery.java.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
@@ -105,7 +101,7 @@ public class FreeMarkerUtils {
 
 	public static void genMapperFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-		String genFileName = JAVA_DIR + SEPARATOR + "mapper" + SEPARATOR + className + "Mapper.java";
+		String genFileName = createDirIfNotExists(genParam, "mapper") + SEPARATOR + className + "Mapper.java";
 
 		ConfigParams params = buildConfigParams(genFileName, "mapper.java.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
@@ -115,7 +111,15 @@ public class FreeMarkerUtils {
 
 	public static void genMapperXmlFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-		String genFileName = RESOURCE_DIR + SEPARATOR + "mapper" + SEPARATOR + className + "Mapper.xml";
+		String path = genParam.getProjectPath() + SEPARATOR + genParam.getSourcePath() + SEPARATOR + "mapper";
+		String genFileName = path + SEPARATOR + className + "Mapper.xml";
+		File dir = new File(path);
+		if (!dir.exists()) {
+			boolean mkdirs = dir.mkdirs();
+			if (mkdirs) {
+				log.info("文件夹{}创建成功", dir.getName());
+			}
+		}
 
 		ConfigParams params = buildConfigParams(genFileName, "mapper.xml.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
@@ -125,12 +129,24 @@ public class FreeMarkerUtils {
 
 	public static void genModelFile(GenParam genParam, List<ColumnInfoDTO> columnInfoList) throws IOException {
 		String className = StrUtils.convertToClassName(genParam.getTableName());
-		String genFileName = JAVA_DIR + SEPARATOR  + "model" + SEPARATOR  + className + ".java";
+		String genFileName = createDirIfNotExists(genParam, "model") + SEPARATOR + className + ".java";
 
 		ConfigParams params = buildConfigParams(genFileName, "model.java.ftl");
 		ContentParam contentParam = initContentParam(genParam, columnInfoList, className);
 
 		freemarkerGenerate(params, contentParam);
+	}
+
+	private static String createDirIfNotExists(GenParam genParam, String dirName) {
+		String path = genParam.getProjectPath() + SEPARATOR + genParam.getJavaPath() + SEPARATOR  + dirName;
+		File dir = new File(path);
+		if (!dir.exists()) {
+			boolean mkdirs = dir.mkdirs();
+			if (mkdirs) {
+				log.info("文件夹{}创建成功", dir.getAbsolutePath() + dir.getName());
+			}
+		}
+		return path;
 	}
 
 
@@ -160,7 +176,6 @@ public class FreeMarkerUtils {
 				contentParam.setBigDecimalJavaType("BigDecimal");
 			}
 		}
-		log.info("{}", contentParam);
 
 		return contentParam;
 	}
@@ -185,14 +200,14 @@ public class FreeMarkerUtils {
 		// 2.设置字符集
 		configuration.setDefaultEncoding("utf-8");
 		// 3.设置模板文件所在路径
-		configuration.setDirectoryForTemplateLoading(ResourceUtils.getFile("classpath:templates"));
-		// 4.指定模板文件
-		Template template = configuration.getTemplate(configParams.getTemplateFileName());
-		try (Writer writer = new FileWriter(configParams.getGenerateFile())) {
-			template.process(params, writer);
-			log.info("模板文件解析成功，生成文件: {}", configParams.getGenerateFile().getName());
-		} catch (TemplateException e) {
-			log.error("模板文件解析发生错误！错误信息: {}", e.getMessage());
+			configuration.setDirectoryForTemplateLoading(ResourceUtils.getFile("classpath:templates"));
+			// 4.指定模板文件
+			Template template = configuration.getTemplate(configParams.getTemplateFileName());
+			try (Writer writer = new FileWriter(configParams.getGenerateFile())) {
+				template.process(params, writer);
+				log.info("模板文件解析成功，生成文件: {}", configParams.getGenerateFile().getName());
+			} catch (TemplateException e) {
+				log.error("模板文件解析发生错误！错误信息: {}", e.getMessage());
 		}
 	}
 

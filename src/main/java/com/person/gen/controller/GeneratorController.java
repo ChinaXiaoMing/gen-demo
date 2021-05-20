@@ -26,8 +26,8 @@ public class GeneratorController {
 
   @ApiOperation(value = "根据表名称自动生成代码", notes = "根据表名称自动生成代码")
   @GetMapping("generateCode")
-  public Result<Boolean> generateCode(GenParam genParam) {
-    return Result.success(generatorService.generateCode(genParam));
+  public Result<String> generateCode(GenParam genParam) {
+    return generatorService.generateCode(genParam);
   }
 
 }
