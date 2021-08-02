@@ -15,4 +15,8 @@ public final class Constant {
 
 	public static final String UNDERLINE = "_";
 
+	public static final String JAVA_PATH = "src/main/java";
+
+	public static final String SOURCE_PATH = "src/main/resources";
+
 }

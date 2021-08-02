@@ -90,8 +90,8 @@ public class GeneratorServiceImpl implements GeneratorService {
 		if (StringUtils.isEmpty(genParam.getProjectPath())) {
 			genParam.setProjectPath(genConfig.getProjectPath());
 		}
-		genParam.setJavaPath(genConfig.getJavaPath());
-		genParam.setSourcePath(genConfig.getSourcePath());
+		genParam.setJavaPath(Constant.JAVA_PATH + genParam.getPackageName().replace(".", "/"));
+		genParam.setSourcePath(Constant.SOURCE_PATH);
 	}
 
 	private void processDescription(GenParam genParam) {

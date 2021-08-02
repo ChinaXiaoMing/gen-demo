@@ -25,5 +25,3 @@ gen:
   author: fu.yuanming
   package-name: com.opensource.ming
   projectPath: D:\demoProject\springboot-ming
-  javaPath: src/main/java/com/opensource/ming
-  sourcePath: src/main/resources

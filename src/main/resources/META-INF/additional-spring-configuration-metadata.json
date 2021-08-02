@@ -9,15 +9,5 @@
       "name": "gen.author",
       "type": "java.lang.String",
       "description": "Description for gen.author."
-    },
-    {
-      "name": "gen.projectPath",
-      "type": "java.lang.String",
-      "description": "Description for gen.projectPath."
-    },
-    {
-      "name": "gen.javaPath",
-      "type": "java.lang.String",
-      "description": "Description for gen.javaPath."
     }
   ] }
